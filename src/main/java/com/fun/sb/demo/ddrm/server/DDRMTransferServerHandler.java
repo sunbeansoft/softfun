@@ -1,7 +1,6 @@
 package com.fun.sb.demo.ddrm.server;
 
-import com.fun.sb.demo.ddrm.model.DDRMRequest;
-import com.fun.sb.demo.ddrm.model.DDRMResult;
+import com.fun.sb.demo.ddrm.model.DDRMServiceResult;
 import com.fun.sb.demo.ddrm.server.service.DDRMService;
 import com.fun.sb.demo.ddrm.server.service.impl.DDRMServiceImpl;
 import io.netty.channel.ChannelHandlerContext;
@@ -21,10 +20,10 @@ public class DDRMTransferServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg)
             throws Exception {
         System.out.println(msg);
-        DDRMRequest request = (DDRMRequest) msg;
-        GlobalSession.addDomainMap(request.getDomain(), ctx.channel());
-        DDRMResult message = ddrmService.queryDomainProperties(request.getDomain());
-        ctx.writeAndFlush(message);
+        DDRMServiceResult message = ddrmService.operateClientRequest(msg, ctx.channel());
+        if (message.isSuccess() && message.isNeedWrite()) {
+            ctx.writeAndFlush(message);
+        }
     }
 
 
@@ -37,14 +36,15 @@ public class DDRMTransferServerHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-
-        super.channelActive(ctx);
-    }
-
-    @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        ctx.fireChannelInactive();
+        if (!GlobalSession.dropChannel(ctx.channel())) {
+            logger.log(Level.WARNING, "删除失败");
+        }
+        DDRMServiceResult message = ddrmService.dropChannel(ctx.channel());
+        if (message.isSuccess() && message.isNeedWrite()) {
+            ctx.writeAndFlush(message);
+        }
+        super.channelInactive(ctx);
     }
 
 }

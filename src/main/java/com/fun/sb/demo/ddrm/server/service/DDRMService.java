@@ -2,6 +2,9 @@ package com.fun.sb.demo.ddrm.server.service;
 
 
 import com.fun.sb.demo.ddrm.model.DDRMResult;
+import com.fun.sb.demo.ddrm.model.DDRMServiceResult;
+import io.netty.channel.Channel;
+
 
 /**
  * Created by sunbeansoft on 15-8-30.
@@ -11,8 +14,24 @@ public interface DDRMService {
     /**
      * 获取相关属性
      *
-     * @param domain
+     * @param domain 域名称
      * @return
      */
     public DDRMResult queryDomainProperties(String domain);
+
+
+    /**
+     * 准对客户端的请求做出相应的操作
+     *
+     * @return
+     */
+    public DDRMServiceResult operateClientRequest(Object clientRequest, Channel channel);
+
+    /**
+     * 当client断开时将session中的数据去除
+     *
+     * @param channel 链接
+     * @return
+     */
+    public DDRMServiceResult dropChannel(Channel channel);
 }
