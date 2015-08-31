@@ -22,7 +22,7 @@ public class DDRMTransferServerHandler extends ChannelInboundHandlerAdapter {
         System.out.println(msg);
         DDRMServiceResult message = ddrmService.operateClientRequest(msg, ctx.channel());
         if (message.isSuccess() && message.isNeedWrite()) {
-            ctx.writeAndFlush(message);
+            ctx.writeAndFlush(message.getResult());
         }
     }
 

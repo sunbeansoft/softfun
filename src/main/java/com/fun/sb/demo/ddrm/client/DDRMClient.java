@@ -56,6 +56,9 @@ public class DDRMClient {
         final int port = 11000;
         final int messageSize = 20;
 
-        new DDRMClient(host, port, messageSize).run();
+        while (true) {
+            new DDRMClient(host, port, messageSize).run();
+            Thread.sleep(5000);
+        }
     }
 }

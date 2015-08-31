@@ -21,7 +21,7 @@ public class DDRMServiceImpl implements DDRMService {
     public DDRMResult queryDomainProperties(String domain) {
         DDRMResult message = new DDRMResult();
         message.setSuccess(true);
-        message.setClassFullName("com.baidu.nuomi.crm.ddrm.DemoBean");
+        message.setClassFullName("com.fun.sb.demo.ddrm.model");
         message.setDomain("crm");
         List<FieldResult> fieldResults = new ArrayList<FieldResult>();
         FieldResult fieldResult = new FieldResult();
