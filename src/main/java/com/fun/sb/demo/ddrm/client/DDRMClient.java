@@ -1,5 +1,6 @@
 package com.fun.sb.demo.ddrm.client;
 
+import com.fun.sb.demo.ddrm.DistributeDataResourceManager;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -16,13 +17,13 @@ public class DDRMClient {
 
     private int port;
 
-    private int messageSize;
+    private DistributeDataResourceManager manager;
 
 
-    public DDRMClient(String host, int port, int messageSize) {
+    public DDRMClient(String host, int port, DistributeDataResourceManager manager) {
         this.host = host;
         this.port = port;
-        this.messageSize = messageSize;
+        this.manager = manager;
     }
 
     public void run() throws InterruptedException {
@@ -38,7 +39,7 @@ public class DDRMClient {
                             ch.pipeline().addLast(
                                     new ObjectEncoder(),
                                     new ObjectDecoder(Integer.MAX_VALUE, ClassResolvers.cacheDisabled(null)),
-                                    new DDRMTransferClientHandler());
+                                    new DDRMTransferClientHandler(manager));
                         }
                     });
 
@@ -50,15 +51,4 @@ public class DDRMClient {
         }
     }
 
-
-    public static void main(String[] args) throws Exception {
-        final String host = "localhost";
-        final int port = 11000;
-        final int messageSize = 20;
-
-        while (true) {
-            new DDRMClient(host, port, messageSize).run();
-            Thread.sleep(5000);
-        }
-    }
 }

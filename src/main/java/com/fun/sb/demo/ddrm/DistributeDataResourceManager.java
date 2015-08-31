@@ -2,9 +2,11 @@ package com.fun.sb.demo.ddrm;
 
 import com.alibaba.fastjson.JSON;
 import com.fun.sb.demo.ddrm.annotation.DataResource;
+import com.fun.sb.demo.ddrm.client.DDRMClient;
 import com.fun.sb.demo.ddrm.model.DDRMRequest;
 import com.fun.sb.demo.ddrm.model.DDRMResult;
 import com.fun.sb.demo.ddrm.model.FieldResult;
+import com.fun.sb.demo.ddrm.server.DDRMServer;
 import com.google.common.collect.Maps;
 import io.netty.channel.Channel;
 
@@ -14,6 +16,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by sunbeansoft on 15-8-19.
@@ -29,6 +33,13 @@ public class DistributeDataResourceManager {
      * 本地缓存
      */
     private static Map<String, Object> resourceMap = Maps.newHashMap();
+
+    public DistributeDataResourceManager() throws InterruptedException {
+        while (true) {
+            new DDRMClient("localhost", 11000, this).run();
+            Thread.sleep(60 * 20);
+        }
+    }
 
 
     /**

@@ -2,7 +2,6 @@ package com.fun.sb.demo.ddrm.client;
 
 import com.fun.sb.demo.ddrm.model.DemoBean;
 import com.fun.sb.demo.ddrm.DistributeDataResourceManager;
-import com.fun.sb.demo.ddrm.model.DDRMRequest;
 import com.fun.sb.demo.ddrm.model.DDRMResult;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -18,7 +17,11 @@ public class DDRMTransferClientHandler extends ChannelInboundHandlerAdapter {
 
     private DemoBean demoBean = new DemoBean();
 
-    private DistributeDataResourceManager manager = new DistributeDataResourceManager();
+    private DistributeDataResourceManager manager;
+
+    public DDRMTransferClientHandler(DistributeDataResourceManager manager) {
+        this.manager = manager;
+    }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
