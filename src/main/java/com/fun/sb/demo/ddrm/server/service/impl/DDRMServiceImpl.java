@@ -1,8 +1,9 @@
 package com.fun.sb.demo.ddrm.server.service.impl;
 
-import com.baidu.nuomi.crm.ddrm.FieldResult;
-import com.baidu.nuomi.crm.ddrm.model.DDRMResult;
-import com.baidu.nuomi.crm.ddrm.server.service.DDRMService;
+
+import com.fun.sb.demo.ddrm.model.DDRMResult;
+import com.fun.sb.demo.ddrm.model.FieldResult;
+import com.fun.sb.demo.ddrm.server.service.DDRMService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,6 @@ import java.util.List;
  * Created by sunbeansoft on 15-8-30.
  */
 public class DDRMServiceImpl implements DDRMService {
-    @Override
     public DDRMResult queryDomainProperties(String domain) {
         DDRMResult message = new DDRMResult();
         message.setSuccess(true);

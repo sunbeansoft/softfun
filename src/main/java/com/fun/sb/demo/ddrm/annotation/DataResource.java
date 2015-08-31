@@ -1,4 +1,4 @@
-package com.fun.sb.demo.ddrm;
+package com.fun.sb.demo.ddrm.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

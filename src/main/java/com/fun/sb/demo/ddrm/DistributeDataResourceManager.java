@@ -1,6 +1,7 @@
 package com.fun.sb.demo.ddrm;
 
 import com.alibaba.fastjson.JSON;
+import com.fun.sb.demo.ddrm.annotation.DataResource;
 import com.fun.sb.demo.ddrm.model.DDRMResult;
 import com.fun.sb.demo.ddrm.model.FieldResult;
 import com.google.common.collect.Maps;

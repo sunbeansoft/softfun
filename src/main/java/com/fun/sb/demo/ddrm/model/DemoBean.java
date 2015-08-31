@@ -1,6 +1,6 @@
 package com.fun.sb.demo.ddrm.model;
 
-import com.fun.sb.demo.ddrm.DataResource;
+import com.fun.sb.demo.ddrm.annotation.DataResource;
 
 /**
  * Created by sunbeansoft on 15-8-19.

@@ -66,4 +66,10 @@ public class DDRMTransferClientHandler extends ChannelInboundHandlerAdapter {
                 cause);
         ctx.close();
     }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        ctx.fireChannelInactive();
+    }
+
 }

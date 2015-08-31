@@ -1,9 +1,9 @@
 package com.fun.sb.demo.ddrm.server;
 
-import com.baidu.nuomi.crm.ddrm.model.DDRMRequest;
-import com.baidu.nuomi.crm.ddrm.model.DDRMResult;
-import com.baidu.nuomi.crm.ddrm.server.service.DDRMService;
-import com.baidu.nuomi.crm.ddrm.server.service.impl.DDRMServiceImpl;
+import com.fun.sb.demo.ddrm.model.DDRMRequest;
+import com.fun.sb.demo.ddrm.model.DDRMResult;
+import com.fun.sb.demo.ddrm.server.service.DDRMService;
+import com.fun.sb.demo.ddrm.server.service.impl.DDRMServiceImpl;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -34,6 +34,17 @@ public class DDRMTransferServerHandler extends ChannelInboundHandlerAdapter {
         logger.log(Level.WARNING, "Unexpected exception from downstream.",
                 cause);
         ctx.close();
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+
+        super.channelActive(ctx);
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        ctx.fireChannelInactive();
     }
 
 }
