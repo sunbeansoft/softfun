@@ -35,21 +35,33 @@ public class DDRMServiceImpl implements DDRMService {
     public DDRMServiceResult operateClientRequest(Object clientRequest, Channel channel) {
         DDRMServiceResult result = new DDRMServiceResult(false, true);
         try {
-            DDRMRequest request = (DDRMRequest) clientRequest;
-            GlobalSession.addDomainMap(request.getDomain(), channel);
-            DDRMResult message = queryDomainProperties(request.getDomain());
-            result.setResult(message);
-            result.setSuccess(true);
+            if (clientRequest instanceof DDRMRequest) {
+                operateDomainProperties((DDRMRequest) clientRequest, channel, result);
+            }
         } catch (Exception e) {
 
         }
         return result;
     }
 
+    /**
+     * 处理获取参数请求
+     *
+     * @param request client请求
+     * @param channel 连接
+     * @param result  返回结果
+     */
+    private void operateDomainProperties(DDRMRequest request, Channel channel, DDRMServiceResult result) {
+        GlobalSession.addDomainMap(request.getDomain(), channel);
+        DDRMResult message = queryDomainProperties(request.getDomain());
+        result.setResult(message);
+        result.setSuccess(true);
+    }
+
     public DDRMServiceResult dropChannel(Channel channel) {
         DDRMServiceResult result = new DDRMServiceResult(false, false);
-        GlobalSession.dropChannel(channel);
-        result.setSuccess(true);
+        boolean success = GlobalSession.dropChannel(channel);
+        result.setSuccess(success);
         return result;
     }
 }

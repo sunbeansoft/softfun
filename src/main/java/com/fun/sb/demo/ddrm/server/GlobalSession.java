@@ -84,7 +84,7 @@ public class GlobalSession {
         }
         if (channels.remove(channel)) {//核心
             String removeDomain = channelDomainMap.remove(channel);
-            if (StringUtils.isNotBlank(domain)) {
+            if (StringUtils.isNotBlank(removeDomain)) {
                 return true;
             }
         }
