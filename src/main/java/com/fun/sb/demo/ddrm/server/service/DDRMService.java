@@ -34,4 +34,13 @@ public interface DDRMService {
      * @return
      */
     public DDRMServiceResult dropChannel(Channel channel);
+
+    /**
+     * 将配置数据推送到domain的各个服务其中
+     *
+     * @param domain     域名
+     * @param properties 配置信息
+     * @return
+     */
+    public DDRMServiceResult pushPropertiesToDomain(String domain, DDRMResult properties);
 }

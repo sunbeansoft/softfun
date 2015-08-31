@@ -2,9 +2,11 @@ package com.fun.sb.demo.ddrm;
 
 import com.alibaba.fastjson.JSON;
 import com.fun.sb.demo.ddrm.annotation.DataResource;
+import com.fun.sb.demo.ddrm.model.DDRMRequest;
 import com.fun.sb.demo.ddrm.model.DDRMResult;
 import com.fun.sb.demo.ddrm.model.FieldResult;
 import com.google.common.collect.Maps;
+import io.netty.channel.Channel;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -18,39 +20,54 @@ import java.util.Map;
  */
 public class DistributeDataResourceManager {
 
-
     /**
-     * 当前服务域名称
+     * 调用server的管道
      */
-    private String domain;
-
-    /**
-     * 数据客户端
-     */
-    private DDRMAgent ddrmAgent;
+    private Channel channel;
 
     /**
      * 本地缓存
      */
-    private Map<String, Object> resourceMap = Maps.newHashMap();
+    private static Map<String, Object> resourceMap = Maps.newHashMap();
 
 
+    /**
+     * 注册新资源
+     *
+     * @param domain         域
+     * @param targetInstance 域实例
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     * @throws NoSuchFieldException
+     */
     public void regist(String domain, Object targetInstance) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
-        this.domain = domain;
         Class targetClass = targetInstance.getClass();
         if (!hasDataResource(targetClass.getDeclaredFields())) {
             return;
         }
         String className = targetClass.getName();
-        resourceMap.put(domain + ":" + className, targetInstance);
-//        DDRMResult result = ddrmAgent.fetchDDRMData(domain, targetClass.getName());
-//        if (result != null && result.isSuccess()) {
-//            insertValue(targetClass, targetInstance, result.getResult());
-//        } else {
-//            logger.error("返回结果异常" + result.getMsg());
-//        }
+        String newResourceName = domain + ":" + className;
+        if (!resourceMap.containsKey(newResourceName)) {
+            resourceMap.put(domain + ":" + className, targetInstance);
+            DDRMRequest request = new DDRMRequest();
+            request.setDomain(domain);
+            //触发请求
+            channel.writeAndFlush(request);
+        }
     }
 
+    /**
+     * 反射值
+     *
+     * @param targetClass    目标类型
+     * @param targetInstance 目标实例
+     * @param result         反射的值
+     * @throws NoSuchFieldException
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
     private void insertValue(Class targetClass, Object targetInstance, List<FieldResult> result) throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         for (FieldResult fieldResult : result) {
             String fieldName = fieldResult.getName();
@@ -70,19 +87,34 @@ public class DistributeDataResourceManager {
         setNewValue(result);
     }
 
-    public void setNewValue(DDRMResult result) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, NoSuchFieldException {
-        Object targetInstance = resourceMap.get(result.getDomain() + ":" + result.getClassFullName());
+    /**
+     * 射入的值
+     *
+     * @param serverProperties server端的数据
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws NoSuchFieldException
+     */
+    public void setNewValue(DDRMResult serverProperties) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, NoSuchFieldException {
+        Object targetInstance = resourceMap.get(serverProperties.getDomain() + ":" + serverProperties.getClassFullName());
         if (targetInstance == null) {
             return;
         }
         Class targetClass = targetInstance.getClass();
-        if (result != null && result.isSuccess()) {
-            insertValue(targetClass, targetInstance, result.getResult());
+        if (serverProperties != null && serverProperties.isSuccess()) {
+            insertValue(targetClass, targetInstance, serverProperties.getResult());
         } else {
             //log
         }
     }
 
+    /**
+     * 是否有值
+     *
+     * @param targetFields
+     * @return
+     */
     private boolean hasDataResource(Field[] targetFields) {
         for (Field field : targetFields) {
             for (Annotation annotation : field.getAnnotations()) {
@@ -94,11 +126,11 @@ public class DistributeDataResourceManager {
         return false;
     }
 
-    public DDRMAgent getDdrmAgent() {
-        return ddrmAgent;
+    public Channel getChannel() {
+        return channel;
     }
 
-    public void setDdrmAgent(DDRMAgent ddrmAgent) {
-        this.ddrmAgent = ddrmAgent;
+    public void setChannel(Channel channel) {
+        this.channel = channel;
     }
 }

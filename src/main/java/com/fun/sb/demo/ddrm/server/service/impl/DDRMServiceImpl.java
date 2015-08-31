@@ -8,6 +8,7 @@ import com.fun.sb.demo.ddrm.model.FieldResult;
 import com.fun.sb.demo.ddrm.server.GlobalSession;
 import com.fun.sb.demo.ddrm.server.service.DDRMService;
 import io.netty.channel.Channel;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 public class DDRMServiceImpl implements DDRMService {
 
 
+    @Override
     public DDRMResult queryDomainProperties(String domain) {
         DDRMResult message = new DDRMResult();
         message.setSuccess(true);
@@ -32,6 +34,7 @@ public class DDRMServiceImpl implements DDRMService {
         return message;
     }
 
+    @Override
     public DDRMServiceResult operateClientRequest(Object clientRequest, Channel channel) {
         DDRMServiceResult result = new DDRMServiceResult(false, true);
         try {
@@ -58,10 +61,26 @@ public class DDRMServiceImpl implements DDRMService {
         result.setSuccess(true);
     }
 
+    @Override
     public DDRMServiceResult dropChannel(Channel channel) {
         DDRMServiceResult result = new DDRMServiceResult(false, false);
         boolean success = GlobalSession.dropChannel(channel);
         result.setSuccess(success);
+        return result;
+    }
+
+    @Override
+    public DDRMServiceResult pushPropertiesToDomain(String domain, DDRMResult properties) {
+        DDRMServiceResult result = new DDRMServiceResult(false, false);
+        List<Channel> channels = GlobalSession.getDomainContext(domain);
+        if (CollectionUtils.isEmpty(channels)) {
+            result.setMsg("没有" + domain + "所对应的数据");
+            return result;
+        }
+        for (Channel channel : channels) {
+            channel.writeAndFlush(properties);
+        }
+        result.setSuccess(true);
         return result;
     }
 }

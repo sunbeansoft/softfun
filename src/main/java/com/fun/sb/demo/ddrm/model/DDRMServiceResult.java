@@ -15,6 +15,11 @@ public class DDRMServiceResult {
     private boolean needWrite;
 
     /**
+     * 返回信息
+     */
+    private String msg;
+
+    /**
      * 返回的数据
      */
     private Object result;
@@ -50,5 +55,13 @@ public class DDRMServiceResult {
 
     public void setResult(Object result) {
         this.result = result;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

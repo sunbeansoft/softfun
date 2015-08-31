@@ -16,20 +16,15 @@ public class DDRMTransferClientHandler extends ChannelInboundHandlerAdapter {
     private static final Logger logger = Logger
             .getLogger(DDRMTransferClientHandler.class.getName());
 
-    //    private final DDRMResult message;
-    private final DDRMRequest request;
-
-    private DemoBean demoBean;
+    private DemoBean demoBean = new DemoBean();
 
     private DistributeDataResourceManager manager = new DistributeDataResourceManager();
 
-    /**
-     * Creates a client-side handler.
-     */
-    public DDRMTransferClientHandler() {
-        request = new DDRMRequest();
-        request.setDomain("crm");
-        demoBean = new DemoBean();
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        // Send the message to Server
+        super.channelActive(ctx);
+        manager.setChannel(ctx.channel());
         try {
             manager.regist("crm", demoBean);
         } catch (NoSuchMethodException e) {
@@ -41,13 +36,6 @@ public class DDRMTransferClientHandler extends ChannelInboundHandlerAdapter {
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        // Send the message to Server
-        super.channelActive(ctx);
-        ctx.writeAndFlush(request);
     }
 
     @Override

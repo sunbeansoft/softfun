@@ -7,7 +7,7 @@ import com.fun.sb.demo.ddrm.annotation.DataResource;
  */
 public class DemoBean {
     @DataResource
-    private String a;
+    private static String a;
 
     public String getA() {
         return a;
