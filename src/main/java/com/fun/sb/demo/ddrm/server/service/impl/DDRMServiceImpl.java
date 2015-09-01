@@ -28,7 +28,7 @@ public class DDRMServiceImpl implements DDRMService {
         List<FieldResult> fieldResults = new ArrayList<FieldResult>();
         FieldResult fieldResult = new FieldResult();
         fieldResult.setName("a");
-        fieldResult.setValue("Hello world!");
+        fieldResult.setValue(String.valueOf(System.currentTimeMillis()));
         fieldResults.add(fieldResult);
         message.setResult(fieldResults);
         return message;

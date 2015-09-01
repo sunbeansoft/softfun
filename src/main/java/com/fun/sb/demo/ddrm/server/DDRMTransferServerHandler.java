@@ -20,14 +20,6 @@ public class DDRMTransferServerHandler extends ChannelInboundHandlerAdapter {
 
     private DDRMService ddrmService = new DDRMServiceImpl();
 
-    private Thread sech = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            DDRMResult message = ddrmService.queryDomainProperties("crm");
-            ddrmService.pushPropertiesToDomain("crm", message);
-        }
-    });
-
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg)
             throws Exception {
