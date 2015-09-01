@@ -30,7 +30,7 @@ public class DDRMTransferClientHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg)
             throws Exception {
         // you can use the Object from Server here
-        System.out.println(msg);
+        System.out.println("receive from server:" + msg);
         DDRMResult result = (DDRMResult) msg;
         manager.setNewValue(result);
     }

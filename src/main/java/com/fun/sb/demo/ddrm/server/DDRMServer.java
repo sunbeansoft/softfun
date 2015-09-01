@@ -11,15 +11,11 @@ import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
 
-public class DDRMServer {
+public class DDRMServer implements Runnable {
 
-    private final int port;
+    private final int port = 11000;
 
-    public DDRMServer(int port) {
-        this.port = port;
-    }
-
-    public void run() throws Exception {
+    public void run() {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
@@ -38,19 +34,11 @@ public class DDRMServer {
 
             // Bind and start to accept incoming connections.
             b.bind(port).sync().channel().closeFuture().sync();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
-    }
-
-    public static void main(String[] args) throws Exception {
-        int port;
-        if (args.length > 0) {
-            port = Integer.parseInt(args[0]);
-        } else {
-            port = 11000;
-        }
-        new DDRMServer(port).run();
     }
 }

@@ -23,7 +23,7 @@ public class DDRMServiceImpl implements DDRMService {
     public DDRMResult queryDomainProperties(String domain) {
         DDRMResult message = new DDRMResult();
         message.setSuccess(true);
-        message.setClassFullName("com.fun.sb.demo.ddrm.model");
+        message.setClassFullName("com.fun.sb.demo.ddrm.model.DemoBean");
         message.setDomain("crm");
         List<FieldResult> fieldResults = new ArrayList<FieldResult>();
         FieldResult fieldResult = new FieldResult();
@@ -79,6 +79,7 @@ public class DDRMServiceImpl implements DDRMService {
         }
         for (Channel channel : channels) {
             channel.writeAndFlush(properties);
+            System.out.println("push to " + channel.remoteAddress() + " " + properties);
         }
         result.setSuccess(true);
         return result;

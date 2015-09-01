@@ -16,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -71,11 +72,13 @@ public class DistributeDataResourceManager {
                 //如果无法链接到server的话等待
                 if (channel == null) {
                     //等待时间不超过5分钟，防止不能启动
-                    reqCondition.awaitNanos(1000 * 60 * 5l);
+                    reqCondition.await(1000 * 1000 * 60 * 5l, TimeUnit.MICROSECONDS);
                 }
-                if (channel != null)
+                if (channel != null) {
                     //触发请求
                     channel.writeAndFlush(request);
+                    System.out.println("send request:" + request);
+                }
             } finally {
                 reqLock.unlock();
             }
