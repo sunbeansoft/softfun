@@ -12,7 +12,7 @@ import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 
-public class DDRMClient {
+public class DDRMClient implements Runnable {
     private String host;
 
     private int port;
@@ -26,28 +26,31 @@ public class DDRMClient {
         this.manager = manager;
     }
 
-    public void run() throws InterruptedException {
-        Bootstrap bootstrap = new Bootstrap();
-        EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
+    public void run() {
+        while (true) {
+            Bootstrap bootstrap = new Bootstrap();
+            EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
 
-        try {
-            bootstrap.group(eventLoopGroup)
-                    .channel(NioSocketChannel.class)
-                    .handler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(
-                                    new ObjectEncoder(),
-                                    new ObjectDecoder(Integer.MAX_VALUE, ClassResolvers.cacheDisabled(null)),
-                                    new DDRMTransferClientHandler(manager));
-                        }
-                    });
-
-            ChannelFuture future = bootstrap.connect(host, port).sync();
-
-            future.channel().closeFuture().sync();
-        } finally {
-            eventLoopGroup.shutdownGracefully();
+            try {
+                bootstrap.group(eventLoopGroup)
+                        .channel(NioSocketChannel.class)
+                        .handler(new ChannelInitializer<SocketChannel>() {
+                            @Override
+                            protected void initChannel(SocketChannel ch) throws Exception {
+                                ch.pipeline().addLast(
+                                        new ObjectEncoder(),
+                                        new ObjectDecoder(Integer.MAX_VALUE, ClassResolvers.cacheDisabled(null)),
+                                        new DDRMTransferClientHandler(manager));
+                            }
+                        });
+                ChannelFuture future = bootstrap.connect(host, port).sync();
+                future.channel().closeFuture().sync();
+                Thread.sleep(60 * 15);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                eventLoopGroup.shutdownGracefully();
+            }
         }
     }
 

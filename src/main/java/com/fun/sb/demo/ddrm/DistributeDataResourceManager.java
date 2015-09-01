@@ -34,11 +34,14 @@ public class DistributeDataResourceManager {
      */
     private static Map<String, Object> resourceMap = Maps.newHashMap();
 
-    public DistributeDataResourceManager() throws InterruptedException {
-        while (true) {
-            new DDRMClient("localhost", 11000, this).run();
-            Thread.sleep(60 * 20);
-        }
+    private ReentrantLock reqLock = new ReentrantLock();
+    private Condition reqCondition = reqLock.newCondition();
+
+    //链接服务端线程
+    private Thread ddrmClient = new Thread(new DDRMClient("localhost", 11000, this));
+
+    public DistributeDataResourceManager() {
+        ddrmClient.start();
     }
 
 
@@ -52,7 +55,7 @@ public class DistributeDataResourceManager {
      * @throws IllegalAccessException
      * @throws NoSuchFieldException
      */
-    public void regist(String domain, Object targetInstance) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
+    public void regist(String domain, Object targetInstance) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException, InterruptedException {
         Class targetClass = targetInstance.getClass();
         if (!hasDataResource(targetClass.getDeclaredFields())) {
             return;
@@ -60,11 +63,22 @@ public class DistributeDataResourceManager {
         String className = targetClass.getName();
         String newResourceName = domain + ":" + className;
         if (!resourceMap.containsKey(newResourceName)) {
-            resourceMap.put(domain + ":" + className, targetInstance);
-            DDRMRequest request = new DDRMRequest();
-            request.setDomain(domain);
-            //触发请求
-            channel.writeAndFlush(request);
+            try {
+                reqLock.lock();
+                resourceMap.put(domain + ":" + className, targetInstance);
+                DDRMRequest request = new DDRMRequest();
+                request.setDomain(domain);
+                //如果无法链接到server的话等待
+                if (channel == null) {
+                    //等待时间不超过5分钟，防止不能启动
+                    reqCondition.awaitNanos(1000 * 60 * 5l);
+                }
+                if (channel != null)
+                    //触发请求
+                    channel.writeAndFlush(request);
+            } finally {
+                reqLock.unlock();
+            }
         }
     }
 
@@ -142,6 +156,12 @@ public class DistributeDataResourceManager {
     }
 
     public void setChannel(Channel channel) {
-        this.channel = channel;
+        try {
+            reqLock.lock();
+            this.channel = channel;
+            reqCondition.signal();
+        } finally {
+            reqLock.unlock();
+        }
     }
 }
