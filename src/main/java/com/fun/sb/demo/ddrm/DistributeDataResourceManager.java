@@ -72,7 +72,7 @@ public class DistributeDataResourceManager {
                 //如果无法链接到server的话等待
                 if (channel == null) {
                     //等待时间不超过5分钟，防止不能启动
-                    reqCondition.await(1000 * 1000 * 60 * 5l, TimeUnit.MICROSECONDS);
+                    reqCondition.await(1000 * 60 * 5l, TimeUnit.MICROSECONDS);
                 }
                 if (channel != null) {
                     //触发请求
