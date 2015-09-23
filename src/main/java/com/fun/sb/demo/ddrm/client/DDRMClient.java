@@ -45,11 +45,17 @@ public class DDRMClient implements Runnable {
                         });
                 ChannelFuture future = bootstrap.connect(host, port).sync();
                 future.channel().closeFuture().sync();
-                Thread.sleep(60 * 15);
             } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 eventLoopGroup.shutdownGracefully();
+                try {
+                    Thread.sleep(60 * 60 * 15);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

@@ -1,33 +1,18 @@
 package com.fun.sb.demo.ddrm.model;
 
-import com.fun.sb.demo.ddrm.DistributeDataResourceManager;
 import com.fun.sb.demo.ddrm.annotation.DataResource;
-
-import java.lang.reflect.InvocationTargetException;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by sunbeansoft on 15-8-19.
  */
-public class DemoBean {
+
+@Service
+public class DemoBean extends AbstractDDRMBean {
     @DataResource
     private static String a;
 
-    public DemoBean() {
-        DistributeDataResourceManager manager = new DistributeDataResourceManager();
-        try {
-            manager.regist("crm", this);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+    private String b;
 
     public String getA() {
         return a;

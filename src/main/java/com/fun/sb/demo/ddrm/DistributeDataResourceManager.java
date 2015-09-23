@@ -39,7 +39,7 @@ public class DistributeDataResourceManager {
     private Condition reqCondition = reqLock.newCondition();
 
     //链接服务端线程
-    private Thread ddrmClient = new Thread(new DDRMClient("localhost", 11000, this));
+    private Thread ddrmClient = new Thread(new DDRMClient("127.0.0.1", 11000, this));
 
     public DistributeDataResourceManager() {
         ddrmClient.start();
