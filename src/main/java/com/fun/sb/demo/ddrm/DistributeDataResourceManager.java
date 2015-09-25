@@ -1,12 +1,11 @@
 package com.fun.sb.demo.ddrm;
 
 import com.alibaba.fastjson.JSON;
+import com.baidu.nuomi.crm.ddrm.model.DDRMRequest;
+import com.baidu.nuomi.crm.ddrm.model.DDRMResult;
+import com.baidu.nuomi.crm.ddrm.model.FieldResult;
 import com.fun.sb.demo.ddrm.annotation.DataResource;
 import com.fun.sb.demo.ddrm.client.DDRMClient;
-import com.fun.sb.demo.ddrm.model.DDRMRequest;
-import com.fun.sb.demo.ddrm.model.DDRMResult;
-import com.fun.sb.demo.ddrm.model.FieldResult;
-import com.fun.sb.demo.ddrm.server.DDRMServer;
 import com.google.common.collect.Maps;
 import io.netty.channel.Channel;
 

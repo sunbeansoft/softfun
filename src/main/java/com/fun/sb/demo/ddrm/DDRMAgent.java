@@ -1,7 +1,7 @@
 package com.fun.sb.demo.ddrm;
 
 
-import com.fun.sb.demo.ddrm.model.DDRMResult;
+import com.baidu.nuomi.crm.ddrm.model.DDRMResult;
 
 /**
  * 通过这个方法获取DistributeDataResourseManager中所管理的数据

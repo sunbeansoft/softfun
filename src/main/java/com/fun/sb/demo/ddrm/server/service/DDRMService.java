@@ -1,8 +1,8 @@
 package com.fun.sb.demo.ddrm.server.service;
 
 
-import com.fun.sb.demo.ddrm.model.DDRMResult;
-import com.fun.sb.demo.ddrm.model.DDRMServiceResult;
+import com.baidu.nuomi.crm.ddrm.model.DDRMResult;
+import com.baidu.nuomi.crm.ddrm.model.DDRMServiceResult;
 import io.netty.channel.Channel;
 
 

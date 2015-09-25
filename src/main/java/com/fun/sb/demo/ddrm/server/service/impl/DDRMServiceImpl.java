@@ -1,10 +1,10 @@
 package com.fun.sb.demo.ddrm.server.service.impl;
 
 
-import com.fun.sb.demo.ddrm.model.DDRMRequest;
-import com.fun.sb.demo.ddrm.model.DDRMResult;
-import com.fun.sb.demo.ddrm.model.DDRMServiceResult;
-import com.fun.sb.demo.ddrm.model.FieldResult;
+import com.baidu.nuomi.crm.ddrm.model.DDRMRequest;
+import com.baidu.nuomi.crm.ddrm.model.DDRMResult;
+import com.baidu.nuomi.crm.ddrm.model.DDRMServiceResult;
+import com.baidu.nuomi.crm.ddrm.model.FieldResult;
 import com.fun.sb.demo.ddrm.server.GlobalSession;
 import com.fun.sb.demo.ddrm.server.service.DDRMService;
 import io.netty.channel.Channel;
@@ -19,7 +19,6 @@ import java.util.List;
 public class DDRMServiceImpl implements DDRMService {
 
 
-    @Override
     public DDRMResult queryDomainProperties(String domain) {
         DDRMResult message = new DDRMResult();
         message.setSuccess(true);
@@ -34,7 +33,6 @@ public class DDRMServiceImpl implements DDRMService {
         return message;
     }
 
-    @Override
     public DDRMServiceResult operateClientRequest(Object clientRequest, Channel channel) {
         DDRMServiceResult result = new DDRMServiceResult(false, true);
         try {
@@ -61,7 +59,6 @@ public class DDRMServiceImpl implements DDRMService {
         result.setSuccess(true);
     }
 
-    @Override
     public DDRMServiceResult dropChannel(Channel channel) {
         DDRMServiceResult result = new DDRMServiceResult(false, false);
         boolean success = GlobalSession.dropChannel(channel);
@@ -69,7 +66,6 @@ public class DDRMServiceImpl implements DDRMService {
         return result;
     }
 
-    @Override
     public DDRMServiceResult pushPropertiesToDomain(String domain, DDRMResult properties) {
         DDRMServiceResult result = new DDRMServiceResult(false, false);
         List<Channel> channels = GlobalSession.getDomainContext(domain);

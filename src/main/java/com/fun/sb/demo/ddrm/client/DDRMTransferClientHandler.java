@@ -1,7 +1,7 @@
 package com.fun.sb.demo.ddrm.client;
 
+import com.baidu.nuomi.crm.ddrm.model.DDRMResult;
 import com.fun.sb.demo.ddrm.DistributeDataResourceManager;
-import com.fun.sb.demo.ddrm.model.DDRMResult;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 

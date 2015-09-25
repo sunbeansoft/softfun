@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * Created by sunbeansoft on 15-9-22.
  */
-public abstract class AbstractDDRMBean implements DDRMResource {
+public abstract class AbstractDDRMBean {
 
     private static DistributeDataResourceManager manager = new DistributeDataResourceManager();
 

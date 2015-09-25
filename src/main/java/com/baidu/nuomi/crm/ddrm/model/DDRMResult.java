@@ -1,4 +1,4 @@
-package com.fun.sb.demo.ddrm.model;
+package com.baidu.nuomi.crm.ddrm.model;
 
 import java.io.Serializable;
 import java.util.List;

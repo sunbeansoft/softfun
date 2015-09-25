@@ -1,9 +1,9 @@
 package com.fun.sb.demo.ddrm.agent.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baidu.nuomi.crm.ddrm.model.DDRMResult;
+import com.baidu.nuomi.crm.ddrm.model.FieldResult;
 import com.fun.sb.demo.ddrm.DDRMAgent;
-import com.fun.sb.demo.ddrm.model.DDRMResult;
-import com.fun.sb.demo.ddrm.model.FieldResult;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
