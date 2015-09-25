@@ -16,7 +16,7 @@ public abstract class AbstractDDRMBean {
     public void init() {
 
         try {
-            manager.regist("crm", this);
+            manager.regist("icrm", this);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
