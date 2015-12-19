@@ -21,11 +21,12 @@ public class HanlpTest {
         CustomDictionary.add("单子ID");
         CustomDictionary.add("团单ID");
         CustomDictionary.add("T10");
+        CustomDictionary.add("公私海");
         CustomDictionary.add("到店付");
+        CoreStopWordDictionary.add("谢谢");
     }
 
     public List<String> getWrods(String str) {
-        StopWordDictionary s = new StopWordDictionary();
         List<Term> terms = NLPTokenizer.segment(str);
         List<String> result = Lists.newArrayList();
         for (Term term : terms) {
