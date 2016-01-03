@@ -7,7 +7,6 @@ import com.hankcs.hanlp.seg.common.Term;
 
 import java.io.*;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Set;
 
 /**
@@ -96,7 +95,7 @@ public class Main {
             Set<String> keySet = wordCountService.getWordCounts(i).getMap().keySet();
             count[i].write(new String(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF}));
             for (String key : keySet) {
-                String cnt = key + "," + wordCountService.getWordCounts(i).getMap().get(key);
+                String cnt = key + "," + wordCountService.getWordCounts(i).getMap().get(key).getDocDistinctCount() + "," + wordCountService.getWordCounts(i).getMap().get(key).getDocCount();
                 count[i].write(cnt, 0, cnt.length());
                 count[i].newLine();
             }

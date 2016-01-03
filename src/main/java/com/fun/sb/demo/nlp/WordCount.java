@@ -19,9 +19,17 @@ public class WordCount {
         map = new HashMap<String, CountModel>();
     }
 
-    public String newLine(String line, String lineIndex) {
+    public List<Term> newLine(String line, String lineIndex) {
         docSum = docSum + 1;
         List<Term> terms = hanlpTest.getWrodWithoutStopwordStr(line);
+        for (Term term : terms) {
+            addWrod(term.word, lineIndex);
+        }
+        return terms;
+    }
+
+    public String newLine(List<Term> terms, String lineIndex) {
+        docSum = docSum + 1;
         StringBuffer sb = new StringBuffer();
         for (Term term : terms) {
             sb.append(term.word).append(" ");
@@ -33,6 +41,7 @@ public class WordCount {
     private boolean addWrod(String word, String lineMD5) {
         if (map.containsKey(word)) {
             CountModel countModel = map.get(word);
+            //如果一行中有两个重复的词 会触发这个条件
             if (lineMD5.equals(countModel.getLastMD5())) {
                 countModel.addDocDistinctCount();
             }

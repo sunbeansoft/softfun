@@ -1,10 +1,8 @@
 package com.fun.sb.demo.nlp.hanlp;
 
-import com.fun.sb.demo.nlp.WordCount;
 import com.google.common.collect.Lists;
 import com.hankcs.hanlp.dictionary.CustomDictionary;
 import com.hankcs.hanlp.dictionary.stopword.CoreStopWordDictionary;
-import com.hankcs.hanlp.dictionary.stopword.StopWordDictionary;
 import com.hankcs.hanlp.seg.common.Term;
 import com.hankcs.hanlp.tokenizer.NLPTokenizer;
 
@@ -23,6 +21,7 @@ public class HanlpTest {
         CustomDictionary.add("T10");
         CustomDictionary.add("公私海");
         CustomDictionary.add("到店付");
+        CustomDictionary.add("85度C");
         CoreStopWordDictionary.add("谢谢");
     }
 

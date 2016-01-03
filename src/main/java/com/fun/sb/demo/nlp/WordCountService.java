@@ -1,6 +1,10 @@
 package com.fun.sb.demo.nlp;
 
 import com.fun.sb.demo.nlp.Util.MD5Util;
+import com.hankcs.hanlp.seg.common.Term;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by shangbin01 on 2015/12/16.
@@ -16,8 +20,18 @@ public class WordCountService {
     }
 
     public String addLine(Integer index, String line) {
-        return wordCounts[index].newLine(line, MD5Util.MD5(line));
+        List<Term> terms = wordCounts[0].newLine(line, MD5Util.MD5(line));
+        return wordCounts[index].newLine(terms, MD5Util.MD5(line));
     }
+
+    public Map<String, CountModel> getAllWordAndCount() {
+        return wordCounts[0].getMap();
+    }
+
+    public Integer getAllDocCount() {
+        return wordCounts[0].getDocSum();
+    }
+
 
     /**
      * 包含且属于
