@@ -7,14 +7,14 @@ import org.slf4j.LoggerFactory;
  * Created by shangbin01 on 2015/12/2.
  */
 public class LogbackTest {
-    //¶¨ÒåÒ»¸öÈ«¾ÖµÄ¼ÇÂ¼Æ÷£¬Í¨¹ıLoggerFactory»ñÈ¡
+    //å®šä¹‰ä¸€ä¸ªå…¨å±€çš„è®°å½•å™¨ï¼Œé€šè¿‡LoggerFactoryè·å–
     private final static Logger logger = LoggerFactory.getLogger(LogbackTest.class);
 
     /**
      * @param args
      */
     public static void main(String[] args) {
-        logger.info("logback ³É¹¦ÁË");
-        logger.error("logback ³É¹¦ÁË");
+        logger.info("logback æˆåŠŸäº†");
+        logger.error("logback æˆåŠŸäº†");
     }
 }

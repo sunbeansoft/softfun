@@ -5,19 +5,19 @@ import java.util.Hashtable;
 public class LRUCache {
 
     private int cacheSize;
-    private Hashtable<Object, Entry> nodes;//»º´æÈİÆ÷
+    private Hashtable<Object, Entry> nodes;//ç¼“å­˜å®¹å™¨
     private int currentSize;
-    private Entry first;//Á´±íÍ·
-    private Entry last;//Á´±íÎ²
+    private Entry first;//é“¾è¡¨å¤´
+    private Entry last;//é“¾è¡¨å°¾
 
     public LRUCache(int i) {
         currentSize = 0;
         cacheSize = i;
-        nodes = new Hashtable<Object, Entry>(i);//»º´æÈİÆ÷
+        nodes = new Hashtable<Object, Entry>(i);//ç¼“å­˜å®¹å™¨
     }
 
     /**
-     * »ñÈ¡»º´æÖĞ¶ÔÏó,²¢°ÑËü·ÅÔÚ×îÇ°Ãæ
+     * è·å–ç¼“å­˜ä¸­å¯¹è±¡,å¹¶æŠŠå®ƒæ”¾åœ¨æœ€å‰é¢
      */
     public Entry get(Object key) {
         Entry node = nodes.get(key);
@@ -30,14 +30,14 @@ public class LRUCache {
     }
 
     /**
-     * Ìí¼Ó entryµ½hashtable, ²¢°Ñentry
+     * æ·»åŠ  entryåˆ°hashtable, å¹¶æŠŠentry
      */
     public void put(Object key, Object value) {
-        //ÏÈ²é¿´hashtableÊÇ·ñ´æÔÚ¸Ãentry, Èç¹û´æÔÚ£¬ÔòÖ»¸üĞÂÆävalue
+        //å…ˆæŸ¥çœ‹hashtableæ˜¯å¦å­˜åœ¨è¯¥entry, å¦‚æœå­˜åœ¨ï¼Œåˆ™åªæ›´æ–°å…¶value
         Entry node = nodes.get(key);
 
         if (node == null) {
-            //»º´æÈİÆ÷ÊÇ·ñÒÑ¾­³¬¹ı´óĞ¡.
+            //ç¼“å­˜å®¹å™¨æ˜¯å¦å·²ç»è¶…è¿‡å¤§å°.
             if (currentSize >= cacheSize) {
                 nodes.remove(last.key);
                 removeLast();
@@ -47,17 +47,17 @@ public class LRUCache {
             node = new Entry();
         }
         node.value = value;
-        //½«×îĞÂÊ¹ÓÃµÄ½Úµã·Åµ½Á´±íÍ·£¬±íÊ¾×îĞÂÊ¹ÓÃµÄ.
+        //å°†æœ€æ–°ä½¿ç”¨çš„èŠ‚ç‚¹æ”¾åˆ°é“¾è¡¨å¤´ï¼Œè¡¨ç¤ºæœ€æ–°ä½¿ç”¨çš„.
         moveToHead(node);
         nodes.put(key, node);
     }
 
     /**
-     * ½«entryÉ¾³ı, ×¢Òâ£ºÉ¾³ı²Ù×÷Ö»ÓĞÔÚcacheÂúÁË²Å»á±»Ö´ĞĞ
+     * å°†entryåˆ é™¤, æ³¨æ„ï¼šåˆ é™¤æ“ä½œåªæœ‰åœ¨cacheæ»¡äº†æ‰ä¼šè¢«æ‰§è¡Œ
      */
     public void remove(Object key) {
         Entry node = nodes.get(key);
-        //ÔÚÁ´±íÖĞÉ¾³ı
+        //åœ¨é“¾è¡¨ä¸­åˆ é™¤
         if (node != null) {
             if (node.prev != null) {
                 node.prev.next = node.next;
@@ -70,15 +70,15 @@ public class LRUCache {
             if (first == node)
                 first = node.next;
         }
-        //ÔÚhashtableÖĞÉ¾³ı
+        //åœ¨hashtableä¸­åˆ é™¤
         nodes.remove(key);
     }
 
     /**
-     * É¾³ıÁ´±íÎ²²¿½Úµã£¬¼´Ê¹ÓÃ×îºó Ê¹ÓÃµÄentry
+     * åˆ é™¤é“¾è¡¨å°¾éƒ¨èŠ‚ç‚¹ï¼Œå³ä½¿ç”¨æœ€å ä½¿ç”¨çš„entry
      */
     private void removeLast() {
-        //Á´±íÎ²²»Îª¿Õ,Ôò½«Á´±íÎ²Ö¸Ïònull. É¾³ıÁ¬±íÎ²£¨É¾³ı×îÉÙÊ¹ÓÃµÄ»º´æ¶ÔÏó£©
+        //é“¾è¡¨å°¾ä¸ä¸ºç©º,åˆ™å°†é“¾è¡¨å°¾æŒ‡å‘null. åˆ é™¤è¿è¡¨å°¾ï¼ˆåˆ é™¤æœ€å°‘ä½¿ç”¨çš„ç¼“å­˜å¯¹è±¡ï¼‰
         if (last != null) {
             if (last.prev != null)
                 last.prev.next = null;
@@ -89,7 +89,7 @@ public class LRUCache {
     }
 
     /**
-     * ÒÆ¶¯µ½Á´±íÍ·£¬±íÊ¾Õâ¸ö½ÚµãÊÇ×îĞÂÊ¹ÓÃ¹ıµÄ
+     * ç§»åŠ¨åˆ°é“¾è¡¨å¤´ï¼Œè¡¨ç¤ºè¿™ä¸ªèŠ‚ç‚¹æ˜¯æœ€æ–°ä½¿ç”¨è¿‡çš„
      */
     private void moveToHead(Entry node) {
         if (node == first)
@@ -111,7 +111,7 @@ public class LRUCache {
     }
 
     /*
-     * Çå¿Õ»º´æ
+     * æ¸…ç©ºç¼“å­˜
      */
     public void clear() {
         first = null;
@@ -122,8 +122,8 @@ public class LRUCache {
 }
 
 class Entry {
-    Entry prev;//Ç°Ò»½Úµã
-    Entry next;//ºóÒ»½Úµã
-    Object value;//Öµ
-    Object key;//¼ü
+    Entry prev;//å‰ä¸€èŠ‚ç‚¹
+    Entry next;//åä¸€èŠ‚ç‚¹
+    Object value;//å€¼
+    Object key;//é”®
 }
