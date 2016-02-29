@@ -6,16 +6,16 @@ import java.util.concurrent.Executors;
 
 public class CountDownLatchTest {
 
-    // Ä£ÄâÁË100Ã×ÈüÅÜ£¬10ÃûÑ¡ÊÖÒÑ¾­×¼±¸¾ÍĞ÷£¬Ö»µÈ²ÃÅĞÒ»ÉùÁîÏÂ¡£µ±ËùÓĞÈË¶¼µ½´ïÖÕµãÊ±£¬±ÈÈü½áÊø¡£
+    // æ¨¡æ‹Ÿäº†100ç±³èµ›è·‘ï¼Œ10åé€‰æ‰‹å·²ç»å‡†å¤‡å°±ç»ªï¼Œåªç­‰è£åˆ¤ä¸€å£°ä»¤ä¸‹ã€‚å½“æ‰€æœ‰äººéƒ½åˆ°è¾¾ç»ˆç‚¹æ—¶ï¼Œæ¯”èµ›ç»“æŸã€‚
     public static void main(String[] args) throws InterruptedException {
 
-        // ¿ªÊ¼µÄµ¹ÊıËø 
+        // å¼€å§‹çš„å€’æ•°é”
         final CountDownLatch begin = new CountDownLatch(1);
 
-        // ½áÊøµÄµ¹ÊıËø 
+        // ç»“æŸçš„å€’æ•°é”
         final CountDownLatch end = new CountDownLatch(10);
 
-        // Ê®ÃûÑ¡ÊÖ 
+        // ååé€‰æ‰‹
         final ExecutorService exec = Executors.newFixedThreadPool(10);
 
         for (int index = 0; index < 10; index++) {
@@ -23,14 +23,14 @@ public class CountDownLatchTest {
             Runnable run = new Runnable() {
                 public void run() {
                     try {
-                        // Èç¹ûµ±Ç°¼ÆÊıÎªÁã£¬Ôò´Ë·½·¨Á¢¼´·µ»Ø¡£
-                        // µÈ´ı
+                        // å¦‚æœå½“å‰è®¡æ•°ä¸ºé›¶ï¼Œåˆ™æ­¤æ–¹æ³•ç«‹å³è¿”å›ã€‚
+                        // ç­‰å¾…
                         begin.await();
                         Thread.sleep((long) (Math.random() * 10000));
                         System.out.println("No." + NO + " arrived");
                     } catch (InterruptedException e) {
                     } finally {
-                        // Ã¿¸öÑ¡ÊÖµ½´ïÖÕµãÊ±£¬end¾Í¼õÒ»
+                        // æ¯ä¸ªé€‰æ‰‹åˆ°è¾¾ç»ˆç‚¹æ—¶ï¼Œendå°±å‡ä¸€
                         end.countDown();
                     }
                 }
@@ -38,9 +38,9 @@ public class CountDownLatchTest {
             exec.submit(run);
         }
         System.out.println("Game Start");
-        // begin¼õÒ»£¬¿ªÊ¼ÓÎÏ·
+        // beginå‡ä¸€ï¼Œå¼€å§‹æ¸¸æˆ
         begin.countDown();
-        // µÈ´ıend±äÎª0£¬¼´ËùÓĞÑ¡ÊÖµ½´ïÖÕµã
+        // ç­‰å¾…endå˜ä¸º0ï¼Œå³æ‰€æœ‰é€‰æ‰‹åˆ°è¾¾ç»ˆç‚¹
         end.await();
         System.out.println("Game Over");
         exec.shutdown();
